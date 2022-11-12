@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "337241698114",
+    "project_id": "easyreturns-1dd5a",
+    "storage_bucket": "easyreturns-1dd5a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337241698114:android:863e07d7f216cc4611a2db",
+        "android_client_info": {
+          "package_name": "com.matias.easyreturns"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337241698114-3u58qfgsfv88scmpt42b5brt3ec6kut2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYa7EFjoANJgrfy9ypCehoUSBbaG4BGiM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337241698114-3u58qfgsfv88scmpt42b5brt3ec6kut2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "337241698114-9l1uipi4354442jcl6s05fip7pb3nqk0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.matias.easyreturns"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
