@@ -9,7 +9,7 @@ import 'package:easyreturns/mainGlobal/AppRouter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:easyreturns/mainGlobal/main.dart';
+import 'package:easyreturns/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

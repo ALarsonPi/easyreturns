@@ -1,4 +1,9 @@
+import 'package:easyreturns/models/PickupRequest.dart';
+import 'package:easyreturns/widgets/ListPickupsForUser.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../ChangeNotifiers/GetPickupRequestNotifier.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -26,18 +31,26 @@ class _HomeScreen extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: _numTabs,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => GetPickupRequestNotifier(),
+        )
+      ],
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: FloatingActionButton.extended(
-            onPressed: () => {},
-            icon: const Icon(Icons.add),
-            label: const Text('Request new Pickup'),
-          ),
-        ),
+        floatingActionButton: (isRequestTab)
+            ? Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: FloatingActionButton.extended(
+                  onPressed: () => {
+                    Navigator.pushNamed(context, '/new-pickup'),
+                  },
+                  icon: const Icon(Icons.add),
+                  label: const Text('Request new Pickup'),
+                ),
+              )
+            : null,
         appBar: AppBar(
           centerTitle: true,
           bottom: TabBar(
@@ -55,9 +68,10 @@ class _HomeScreen extends State<HomeScreen>
           physics: const NeverScrollableScrollPhysics(),
           controller: _controller,
           children: [
-            Column(
+            ListView(
+              shrinkWrap: true,
               children: const [
-                Icon(Icons.flight, size: 350),
+                ListPickupsForUser(),
               ],
             ),
             Column(

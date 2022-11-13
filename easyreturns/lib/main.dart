@@ -1,9 +1,12 @@
+import 'package:easyreturns/ChangeNotifiers/GetPickupRequestNotifier.dart';
+import 'package:easyreturns/screens/NewPickupScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'AppRouter.dart';
+import 'package:provider/provider.dart';
+import 'mainGlobal/AppRouter.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import '../firebase_options.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   // Setting the App as Vertical Only
