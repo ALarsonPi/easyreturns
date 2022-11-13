@@ -1,6 +1,8 @@
 import 'package:easyreturns/models/PickupRequest.dart';
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class ListPickupsForUser extends StatelessWidget {
   const ListPickupsForUser({super.key});
@@ -8,31 +10,71 @@ class ListPickupsForUser extends StatelessWidget {
   List<Padding> buildPickupRequestCards(List<PickupRequest> requests) {
     List<Padding> currList = List.empty(growable: true);
     for (var request in requests) {
-      List<String> packageDescriptions = List.empty(growable: true);
-      packageDescriptions.add(request.packageDescription1);
+      List<String> additionalPackageDescriptions = List.empty(growable: true);
       if (request.packageDescription2 != "blank") {
-        packageDescriptions.add(request.packageDescription2);
+        additionalPackageDescriptions.add(request.packageDescription2);
       }
       if (request.packageDescription3 != "blank") {
-        packageDescriptions.add(request.packageDescription3);
+        additionalPackageDescriptions.add(request.packageDescription3);
       }
       if (request.packageDescription4 != "blank") {
-        packageDescriptions.add(request.packageDescription4);
+        additionalPackageDescriptions.add(request.packageDescription4);
       }
 
-      String packageDescriptionString = "";
-      for (String description in packageDescriptions) {
-        packageDescriptionString += "$description\n";
+      DateTime dayOfPickup = DateFormat.yMMMEd().parse(request.dayOfPickup);
+      String dayOfMonth = request.dayOfPickup.substring(5, 11);
+      debugPrint(request.dayOfPickup);
+      String relativeDay = Jiffy(dayOfPickup).fromNow();
+      if (dayOfPickup.day == DateTime.now().day) {
+        relativeDay = "Today";
+      } else if (dayOfPickup.day == (DateTime.now().day + 1)) {
+        relativeDay = "Tomorrow";
+      } else if (dayOfPickup.day == (DateTime.now().day - 1)) {
+        relativeDay = "Yesterday";
+      } // else if (dayOfPickup.isBefore(DateTime.now())) {
+      //   relativeDay = "Overdue";
+      // }
+
+      String packageDescriptionString = request.packageDescription1;
+      for (String description in additionalPackageDescriptions) {
+        packageDescriptionString += "\n$description";
       }
       currList.add(
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(
+            top: 8.0,
+            left: 8.0,
+            bottom: 0.0,
+            right: 8.0,
+          ),
           child: Card(
-            child: ListTile(
-                leading: const Icon(Icons.schedule_send_outlined),
-                title: Text(
-                    "Pickup Day:       ${request.dayOfPickup.substring(0, request.dayOfPickup.length - 6)}\nScheduled At:   ${request.timeFrameOfPickup}"),
-                subtitle: Text(packageDescriptionString)),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 12.0,
+                bottom: 12.0,
+              ),
+              child: ListTile(
+                  minLeadingWidth: 0.0,
+                  leading: const SizedBox(
+                    height: double.infinity,
+                    child: Icon(Icons.schedule_send_outlined),
+                  ),
+                  title: Padding(
+                    padding: const EdgeInsets.only(top: 0.0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(packageDescriptionString),
+                        ]),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          "$relativeDay ($dayOfMonth)\nbetween ${request.timeFrameOfPickup}"),
+                    ],
+                  )),
+            ),
           ),
         ),
       );
