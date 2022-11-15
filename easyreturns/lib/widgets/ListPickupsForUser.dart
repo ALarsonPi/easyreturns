@@ -64,6 +64,13 @@ class ListPickupsForUser extends StatelessWidget {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // const Text(
+                          //   "Pickup of:",
+                          //   style: TextStyle(
+                          //     fontSize: 22,
+                          //     fontWeight: FontWeight.bold,
+                          //   ),
+                          // ),
                           Text(packageDescriptionString),
                         ]),
                   ),
@@ -71,7 +78,7 @@ class ListPickupsForUser extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          "$relativeDay ($dayOfMonth)\nbetween ${request.timeFrameOfPickup}"),
+                          "Pickup is $relativeDay ($dayOfMonth)\nbetween ${request.timeFrameOfPickup}"),
                     ],
                   )),
             ),
