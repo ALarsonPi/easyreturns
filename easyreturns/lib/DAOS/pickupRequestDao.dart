@@ -13,8 +13,6 @@ class PickupRequestDao {
   Stream<List<PickupRequest>> streamPickupRequestsList() {
     var thing = pickupRequestCollection.snapshots().map((list) =>
         list.docs.map((doc) => PickupRequest.fromSnapshot(doc)).toList());
-    debugPrint("hippo");
-    debugPrint(thing.length.toString());
     return thing;
   }
 

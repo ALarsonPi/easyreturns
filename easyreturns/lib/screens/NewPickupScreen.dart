@@ -4,6 +4,7 @@ import 'package:easyreturns/widgets/PackageItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+import '../shared/DeliveryInfoParent.dart';
 import '../widgets/CustomButton.dart';
 import 'package:intl/intl.dart';
 import '../widgets/CustomInput.dart';
@@ -18,12 +19,8 @@ class NewPickupScreen extends StatefulWidget {
 class _NewPickupScreen extends State<NewPickupScreen> {
   bool isValidForm = false;
 
-  // Account Info Step
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _phoneNameController = TextEditingController();
-
-  // Package Info step
+  // Holds the info about user and delivery Location
+  DeliveryInfoParent deliveryInfoParent = DeliveryInfoParent();
 
   // Current Max items in one delivery = 4 separate items
   final TextEditingController _mainPackageDescription = TextEditingController();
@@ -31,14 +28,6 @@ class _NewPickupScreen extends State<NewPickupScreen> {
       List.empty(growable: true);
   List<TextEditingController> allPackageDescriptionControllers =
       List.empty(growable: true);
-
-  // Pickup Location Step
-  final TextEditingController _streetAddressController =
-      TextEditingController();
-  final TextEditingController _aptBuildingNumController =
-      TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _zipCodeController = TextEditingController();
 
   List<PackageItem> additionalPackageItems = List.empty(growable: true);
 
@@ -148,17 +137,17 @@ class _NewPickupScreen extends State<NewPickupScreen> {
             CustomInput(
               hint: "First Name",
               inputBorder: const OutlineInputBorder(),
-              controller: _firstNameController,
+              controller: deliveryInfoParent.firstNameController,
             ),
             CustomInput(
               hint: "Last Name",
               inputBorder: const OutlineInputBorder(),
-              controller: _lastNameController,
+              controller: deliveryInfoParent.lastNameController,
             ),
             CustomInput(
               hint: "Phone Number",
               inputBorder: const OutlineInputBorder(),
-              controller: _phoneNameController,
+              controller: deliveryInfoParent.phoneNumberController,
             ),
           ],
         ),
@@ -272,22 +261,22 @@ class _NewPickupScreen extends State<NewPickupScreen> {
             CustomInput(
               hint: "Street Address",
               inputBorder: const OutlineInputBorder(),
-              controller: _streetAddressController,
+              controller: deliveryInfoParent.streetAddressController,
             ),
             CustomInput(
               hint: "Apt/Building Number",
               inputBorder: const OutlineInputBorder(),
-              controller: _aptBuildingNumController,
+              controller: deliveryInfoParent.aptBuildingNumController,
             ),
             CustomInput(
               hint: "City",
               inputBorder: const OutlineInputBorder(),
-              controller: _cityController,
+              controller: deliveryInfoParent.cityController,
             ),
             CustomInput(
               hint: "Zip Code",
               inputBorder: const OutlineInputBorder(),
-              controller: _zipCodeController,
+              controller: deliveryInfoParent.zipCodeController,
             ),
           ],
         ),
@@ -413,9 +402,9 @@ class _NewPickupScreen extends State<NewPickupScreen> {
                 temporaryValidateControllers();
 
                 PickupRequest request = PickupRequest(
-                    firstName: _firstNameController.text,
-                    lastName: _lastNameController.text,
-                    phoneNumber: _phoneNameController.text,
+                    firstName: deliveryInfoParent.firstNameController.text,
+                    lastName: deliveryInfoParent.lastNameController.text,
+                    phoneNumber: deliveryInfoParent.phoneNumberController.text,
                     packageDescription1: _mainPackageDescription.text,
                     QRcode1: "Nothing1",
                     packageDescription2:
@@ -429,10 +418,11 @@ class _NewPickupScreen extends State<NewPickupScreen> {
                     QRcode4: "Nothing4",
                     dayOfPickup: DateFormat.yMMMEd().format(currentDate!),
                     timeFrameOfPickup: currentTimeFrameChosen as String,
-                    streetAddress: _streetAddressController.text,
-                    aptNumber: _aptBuildingNumController.text,
-                    city: _cityController.text,
-                    zipCode: _zipCodeController.text,
+                    streetAddress:
+                        deliveryInfoParent.streetAddressController.text,
+                    aptNumber: deliveryInfoParent.aptBuildingNumController.text,
+                    city: deliveryInfoParent.cityController.text,
+                    zipCode: deliveryInfoParent.zipCodeController.text,
                     basePrice: "$currentPriceOfOurService",
                     tipAmount: "$currentTipAmount",
                     totalPrice:
@@ -456,14 +446,14 @@ class _NewPickupScreen extends State<NewPickupScreen> {
   }
 
   void temporaryValidateControllers() {
-    if (_firstNameController.text.isEmpty) {
-      _firstNameController.text = "blank";
+    if (deliveryInfoParent.firstNameController.text.isEmpty) {
+      deliveryInfoParent.firstNameController.text = "blank";
     }
-    if (_lastNameController.text.isEmpty) {
-      _lastNameController.text = "blank";
+    if (deliveryInfoParent.lastNameController.text.isEmpty) {
+      deliveryInfoParent.lastNameController.text = "blank";
     }
-    if (_phoneNameController.text.isEmpty) {
-      _phoneNameController.text = "blank";
+    if (deliveryInfoParent.phoneNumberController.text.isEmpty) {
+      deliveryInfoParent.phoneNumberController.text = "blank";
     }
     if (_mainPackageDescription.text.isEmpty) {
       _mainPackageDescription.text = "blank";
@@ -473,17 +463,17 @@ class _NewPickupScreen extends State<NewPickupScreen> {
         allPackageDescriptionControllers[i].text = "blank";
       }
     }
-    if (_streetAddressController.text.isEmpty) {
-      _streetAddressController.text = "blank";
+    if (deliveryInfoParent.streetAddressController.text.isEmpty) {
+      deliveryInfoParent.streetAddressController.text = "blank";
     }
-    if (_aptBuildingNumController.text.isEmpty) {
-      _aptBuildingNumController.text = "blank";
+    if (deliveryInfoParent.aptBuildingNumController.text.isEmpty) {
+      deliveryInfoParent.aptBuildingNumController.text = "blank";
     }
-    if (_cityController.text.isEmpty) {
-      _cityController.text = "blank";
+    if (deliveryInfoParent.cityController.text.isEmpty) {
+      deliveryInfoParent.cityController.text = "blank";
     }
-    if (_zipCodeController.text.isEmpty) {
-      _zipCodeController.text = "blank";
+    if (deliveryInfoParent.zipCodeController.text.isEmpty) {
+      deliveryInfoParent.zipCodeController.text = "blank";
     }
   }
 }

@@ -16,14 +16,9 @@ class UserDao {
     return usersCollection.add(currUser.toJson());
   }
 
-  // Future<int> findNumberOfScoresHigherThan(int currScore) async {
-  //   int count = await collection
-  //       .where('score', isGreaterThan: currScore)
-  //       .orderBy('score', descending: true)
-  //       .get()
-  //       .then((value) => value.size);
-  //   return count;
-  // }
+  Future<User> findUserbyID(String userID) async {
+    return (usersCollection.where('userID', isEqualTo: userID).get() as User);
+  }
 
   void updateUser(User currUser) async {
     await usersCollection.doc(currUser.userID).update(currUser.toJson());

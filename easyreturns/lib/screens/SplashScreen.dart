@@ -1,3 +1,6 @@
+import 'package:easyreturns/mainGlobal/Global.dart';
+import 'package:easyreturns/screens/LoginScreen.dart';
+import 'package:easyreturns/screens/RegisterScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
@@ -27,7 +30,9 @@ class _SplashScreen extends State<SplashScreen> {
       body: AnimatedSplashScreen(
           splash: 'assets/images/easyReturns.png',
           pageTransitionType: PageTransitionType.fade,
-          nextScreen: HomeScreen(),
+          nextScreen: (Global.isRegistered)
+              ? ((Global.isLoggedIn) ? HomeScreen() : LoginScreen())
+              : RegisterScreen(),
           duration: 2000,
           splashIconSize: 150,
           splashTransition: SplashTransition.fadeTransition),
