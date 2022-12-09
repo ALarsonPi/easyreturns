@@ -1,4 +1,3 @@
-import 'package:easyreturns/ChangeNotifiers/GetPickupRequestNotifier.dart';
 import 'package:easyreturns/mainGlobal/FileTracker.dart';
 import 'package:easyreturns/mainGlobal/Global.dart';
 import 'package:easyreturns/screens/NewPickupScreen.dart';
@@ -9,6 +8,9 @@ import 'mainGlobal/AppRouter.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+
+import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
+import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 
 Future<void> main() async {
   // Setting the App as Vertical Only
@@ -31,6 +33,16 @@ Future<void> main() async {
 
   debugPrint("Is Registered: " + Global.isRegistered.toString());
   debugPrint("Is Logged in: " + Global.isLoggedIn.toString());
+
+  // THIS SHOULD BE CHANGED
+  Global.isLoggedIn = true;
+  Global.isRegistered = true;
+
+  final GoogleMapsFlutterPlatform mapsImplementation =
+      GoogleMapsFlutterPlatform.instance;
+  if (mapsImplementation is GoogleMapsFlutterAndroid) {
+    mapsImplementation.useAndroidViewSurface = true;
+  }
 
   runApp(const AppRouter());
 }

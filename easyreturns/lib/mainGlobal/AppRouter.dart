@@ -1,4 +1,3 @@
-import 'package:easyreturns/ChangeNotifiers/GetPickupRequestNotifier.dart';
 import 'package:easyreturns/DAOS/pickupRequestDao.dart';
 import 'package:easyreturns/models/PickupRequest.dart';
 import 'package:easyreturns/screens/HomeScreen.dart';

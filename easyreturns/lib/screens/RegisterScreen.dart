@@ -1,7 +1,8 @@
 import 'package:easyreturns/shared/DeliveryInfoParent.dart';
 import 'package:easyreturns/shared/LoginInfoParent.dart';
-import 'package:easyreturns/widgets/CustomInput.dart';
 import 'package:flutter/material.dart';
+
+import '../widgets/PickupRequestWidgets/CustomInput.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override

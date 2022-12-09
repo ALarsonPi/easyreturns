@@ -1,5 +1,6 @@
-import 'package:easyreturns/widgets/CustomInput.dart';
 import 'package:flutter/material.dart';
+
+import 'CustomInput.dart';
 
 class PackageItem extends StatefulWidget {
   var elevatedButtonStyle;

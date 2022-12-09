@@ -1,13 +1,13 @@
 import 'package:easyreturns/DAOS/pickupRequestDao.dart';
 import 'package:easyreturns/models/PickupRequest.dart';
-import 'package:easyreturns/widgets/PackageItem.dart';
+import 'package:easyreturns/widgets/PickupRequestWidgets/PackageItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import '../shared/DeliveryInfoParent.dart';
-import '../widgets/CustomButton.dart';
 import 'package:intl/intl.dart';
-import '../widgets/CustomInput.dart';
+
+import '../widgets/PickupRequestWidgets/CustomInput.dart';
 
 class NewPickupScreen extends StatefulWidget {
   @override
