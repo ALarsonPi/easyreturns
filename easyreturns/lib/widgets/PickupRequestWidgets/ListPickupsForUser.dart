@@ -23,17 +23,19 @@ class ListPickupsForUser extends StatelessWidget {
 
       DateTime dayOfPickup = DateFormat.yMMMEd().parse(request.dayOfPickup);
       String dayOfMonth = request.dayOfPickup.substring(5, 11);
-      debugPrint(request.dayOfPickup);
+
       String relativeDay = Jiffy(dayOfPickup).fromNow();
       if (dayOfPickup.day == DateTime.now().day) {
         relativeDay = "Today";
       } else if (dayOfPickup.day == (DateTime.now().day + 1)) {
         relativeDay = "Tomorrow";
-      } else if (dayOfPickup.day == (DateTime.now().day - 1)) {
-        relativeDay = "Yesterday";
-      } // else if (dayOfPickup.isBefore(DateTime.now())) {
-      //   relativeDay = "Overdue";
+      }
+      //  else if (dayOfPickup.day == (DateTime.now().day - 1)) {
+      //   relativeDay = "Yesterday";
       // }
+      else if (dayOfPickup.isBefore(DateTime.now())) {
+        relativeDay = "Overdue";
+      }
 
       String packageDescriptionString = request.packageDescription1;
       for (String description in additionalPackageDescriptions) {

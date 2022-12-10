@@ -3,6 +3,7 @@ import 'package:easyreturns/models/PickupRequest.dart';
 import 'package:easyreturns/widgets/PickupRequestWidgets/PackageItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:geocode/geocode.dart';
 
 import '../shared/DeliveryInfoParent.dart';
 import 'package:intl/intl.dart';
@@ -378,6 +379,10 @@ class _NewPickupScreen extends State<NewPickupScreen> {
     ];
   }
 
+  String gatherFullAddress(String streetAddress, String city, String zipCode) {
+    return "$streetAddress, $city, ${(zipCode.isNotEmpty) ? zipCode : ''}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -395,41 +400,66 @@ class _NewPickupScreen extends State<NewPickupScreen> {
                 : setState(() {
                     currentStep -= 1;
                   }),
-            onStepContinue: () {
+            onStepContinue: () async {
               bool isLastStep = (currentStep == getSteps().length - 1);
               if (isLastStep) {
                 // In the future validate instead of saying "blank"
                 temporaryValidateControllers();
 
+                String fullAddress = gatherFullAddress(
+                    deliveryInfoParent.streetAddressController.text,
+                    deliveryInfoParent.cityController.text,
+                    deliveryInfoParent.zipCodeController.text);
+
+                GeoCode geoCode = GeoCode();
+
+                double pickupLatitude = 40.25;
+                double pickupLongitude = -111.6562;
+
+                try {
+                  Coordinates coordinates =
+                      await geoCode.forwardGeocoding(address: fullAddress);
+
+                  if (coordinates.latitude != null &&
+                      coordinates.longitude != null) {
+                    pickupLatitude = coordinates.latitude as double;
+                    pickupLongitude = coordinates.longitude as double;
+                  }
+                } catch (e) {
+                  debugPrint(e.toString());
+                }
+
                 PickupRequest request = PickupRequest(
-                    firstName: deliveryInfoParent.firstNameController.text,
-                    lastName: deliveryInfoParent.lastNameController.text,
-                    phoneNumber: deliveryInfoParent.phoneNumberController.text,
-                    packageDescription1: _mainPackageDescription.text,
-                    QRcode1: "Nothing1",
-                    packageDescription2:
-                        allPackageDescriptionControllers[0].text,
-                    QRcode2: "Nothing2",
-                    packageDescription3:
-                        allPackageDescriptionControllers[1].text,
-                    QRcode3: "Nothing3",
-                    packageDescription4:
-                        allPackageDescriptionControllers[2].text,
-                    QRcode4: "Nothing4",
-                    dayOfPickup: DateFormat.yMMMEd().format(currentDate!),
-                    timeFrameOfPickup: currentTimeFrameChosen as String,
-                    streetAddress:
-                        deliveryInfoParent.streetAddressController.text,
-                    aptNumber: deliveryInfoParent.aptBuildingNumController.text,
-                    city: deliveryInfoParent.cityController.text,
-                    zipCode: deliveryInfoParent.zipCodeController.text,
-                    basePrice: "$currentPriceOfOurService",
-                    tipAmount: "$currentTipAmount",
-                    totalPrice:
-                        "${currentPriceOfOurService + currentTipAmount}");
+                  firstName: deliveryInfoParent.firstNameController.text,
+                  lastName: deliveryInfoParent.lastNameController.text,
+                  phoneNumber: deliveryInfoParent.phoneNumberController.text,
+                  packageDescription1: _mainPackageDescription.text,
+                  QRcode1: "Nothing1",
+                  packageDescription2: allPackageDescriptionControllers[0].text,
+                  QRcode2: "Nothing2",
+                  packageDescription3: allPackageDescriptionControllers[1].text,
+                  QRcode3: "Nothing3",
+                  packageDescription4: allPackageDescriptionControllers[2].text,
+                  QRcode4: "Nothing4",
+                  dayOfPickup: DateFormat.yMMMEd().format(currentDate!),
+                  timeFrameOfPickup: currentTimeFrameChosen as String,
+                  streetAddress:
+                      deliveryInfoParent.streetAddressController.text,
+                  aptNumber: deliveryInfoParent.aptBuildingNumController.text,
+                  city: deliveryInfoParent.cityController.text,
+                  zipCode: deliveryInfoParent.zipCodeController.text,
+                  basePrice: "$currentPriceOfOurService",
+                  tipAmount: "$currentTipAmount",
+                  totalPrice: "${currentPriceOfOurService + currentTipAmount}",
+                  latitude: pickupLatitude.toString(),
+                  longitude: pickupLongitude.toString(),
+                );
 
                 PickupRequestDao pickupRequestDao = PickupRequestDao();
                 pickupRequestDao.addPickupRequest(request);
+
+                // Just in case the context gets corrupted
+                if (!mounted) return;
                 Navigator.pushNamed(context, '/home');
               } else {
                 setState(() {

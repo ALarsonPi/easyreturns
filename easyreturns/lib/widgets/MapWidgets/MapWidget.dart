@@ -52,26 +52,15 @@ class MapWidgetState extends State<MapWidget> {
     });
   }
 
-  _setMarkers(BuildContext context) async {
+  _setMarkers(BuildContext context) {
     var streamedRequests = Provider.of<List<PickupRequest>>(context);
 
     for (PickupRequest request in streamedRequests) {
-      final fullAddress =
-          "${request.streetAddress},${request.city},${request.zipCode}";
-
-      GeoCode geoCode = GeoCode();
-
-      try {
-        Coordinates coordinates =
-            await geoCode.forwardGeocoding(address: fullAddress);
-
-        debugPrint("Latitude: ${coordinates.latitude}");
-        debugPrint("Longitude: ${coordinates.longitude}");
-        _addMarker(request.pickupRequestID.toString(), coordinates.latitude,
-            coordinates.longitude);
-      } catch (e) {
-        debugPrint(e.toString());
-      }
+      _addMarker(
+        request.pickupRequestID.toString(),
+        double.tryParse(request.latitude),
+        double.tryParse(request.longitude),
+      );
     }
   }
 
@@ -79,10 +68,7 @@ class MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    //_setMarkers(context);
-
-    _addMarker("first", 40.25063, -111.65615);
-    _addMarker("second", 40.26303, -111.66988);
+    _setMarkers(context);
 
     Widget theMap = GoogleMap(
       mapType: MapType.terrain,

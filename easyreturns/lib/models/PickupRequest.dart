@@ -30,6 +30,9 @@ class PickupRequest {
   late String tipAmount;
   late String totalPrice;
 
+  late String latitude;
+  late String longitude;
+
   PickupRequest({
     required this.firstName,
     required this.lastName,
@@ -51,6 +54,8 @@ class PickupRequest {
     required this.basePrice,
     required this.tipAmount,
     required this.totalPrice,
+    required this.latitude,
+    required this.longitude,
   });
 
   PickupRequest.blank() {
@@ -73,6 +78,8 @@ class PickupRequest {
     basePrice = "3.99";
     tipAmount = "2";
     totalPrice = "5.99";
+    latitude = "40.25063";
+    longitude = "-111.65615";
   }
 
   Map<String, dynamic> toJson() => _pickupRequestToJson(this);
@@ -110,6 +117,8 @@ PickupRequest _pickupRequestFromJson(Map<String, dynamic> json) {
     basePrice: json['basePrice'],
     tipAmount: json['tipAmount'],
     totalPrice: json['totalPrice'],
+    latitude: json['latitude'],
+    longitude: json['longitude'],
   );
 }
 
@@ -135,4 +144,6 @@ Map<String, dynamic> _pickupRequestToJson(PickupRequest instance) =>
       'basePrice': instance.basePrice,
       'tipAmount': instance.tipAmount,
       'totalPrice': instance.totalPrice,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
     };
