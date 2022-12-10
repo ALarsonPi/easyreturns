@@ -20,10 +20,8 @@ class MapWidgetState extends State<MapWidget> {
   // late GoogleMapController _controller;
   final Completer<GoogleMapController> _controller = Completer();
 
-  static const CameraPosition _utahProvo = CameraPosition(
-    target: LatLng(40.233845, -111.658531),
-    zoom: 14.4746,
-  );
+  final double currZoom = 14.0;
+  static late CameraPosition _initialPosition;
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -31,8 +29,10 @@ class MapWidgetState extends State<MapWidget> {
     var markerIdVal = id;
     final MarkerId markerId = MarkerId(markerIdVal);
 
-    double latitudePosition = latitude ?? _utahProvo.target.latitude + 0.01;
-    double longitudePosition = longitude ?? _utahProvo.target.longitude + 0.01;
+    double latitudePosition =
+        latitude ?? _initialPosition.target.latitude + 0.01;
+    double longitudePosition =
+        longitude ?? _initialPosition.target.longitude + 0.01;
 
     // creating a new MARKER
     final Marker marker = Marker(
@@ -47,7 +47,6 @@ class MapWidgetState extends State<MapWidget> {
     );
 
     setState(() {
-      // adding a new marker to map
       markers[markerId] = marker;
     });
   }
@@ -62,23 +61,34 @@ class MapWidgetState extends State<MapWidget> {
         double.tryParse(request.longitude),
       );
     }
+
+    if (markers.values.isNotEmpty) {
+      _initialPosition = CameraPosition(
+        target: LatLng(
+          markers.values.first.position.latitude,
+          markers.values.first.position.longitude,
+        ),
+        zoom: currZoom,
+      );
+    }
   }
 
   _onMarkerTapped(MarkerId markerId) {}
 
   @override
   Widget build(BuildContext context) {
+    // Initial default - middle of PROVO
+    _initialPosition = CameraPosition(
+      target: LatLng(40.233845, -111.658531),
+      zoom: currZoom,
+    );
     _setMarkers(context);
 
     Widget theMap = GoogleMap(
       mapType: MapType.terrain,
-      initialCameraPosition: _utahProvo,
-      onMapCreated: (GoogleMapController controller) {
-        // _controller = controller;
+      initialCameraPosition: _initialPosition,
+      onMapCreated: (GoogleMapController controller) async {
         _controller.complete(controller);
-
-        Provider.of<IsMapReadyNotifier>(context, listen: false)
-            .setIsMapReady(true);
       },
       gestureRecognizers: Set()
         ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer())),
