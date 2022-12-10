@@ -1,3 +1,4 @@
+import 'package:easyreturns/ChangeNotifiers/requestMapDetailsNotifier.dart';
 import 'package:easyreturns/models/PickupRequest.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
@@ -7,9 +8,15 @@ import 'package:intl/intl.dart';
 class ListPickupsForUser extends StatelessWidget {
   const ListPickupsForUser({super.key});
 
-  List<Padding> buildPickupRequestCards(List<PickupRequest> requests) {
+  List<Padding> buildPickupRequestCards(
+      List<PickupRequest> requests, BuildContext context) {
     List<Padding> currList = List.empty(growable: true);
+    int index = 0;
     for (var request in requests) {
+      if (index == 0) {
+        Provider.of<RequestMapDetailsNotifier>(context, listen: false)
+            .setNewRequestAsCurrent(request, false);
+      }
       List<String> additionalPackageDescriptions = List.empty(growable: true);
       if (request.packageDescription2 != "blank") {
         additionalPackageDescriptions.add(request.packageDescription2);
@@ -87,6 +94,7 @@ class ListPickupsForUser extends StatelessWidget {
           ),
         ),
       );
+      index++;
     }
     if (currList.isEmpty) {
       currList.add(
@@ -121,7 +129,7 @@ class ListPickupsForUser extends StatelessWidget {
 
     return ListView(
       shrinkWrap: true,
-      children: [...buildPickupRequestCards(requests)],
+      children: [...buildPickupRequestCards(requests, context)],
     );
   }
 }

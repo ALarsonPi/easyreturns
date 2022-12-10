@@ -4,6 +4,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../../ChangeNotifiers/IsMapReadyNotifier.dart';
+import '../../mainGlobal/Global.dart';
 import 'MapWidget.dart';
 
 class MapTab extends StatefulWidget {
@@ -18,6 +19,7 @@ class MapTab extends StatefulWidget {
 class _MapTab extends State<MapTab> {
   PermissionStatus _permissionStatus = PermissionStatus.denied;
   Future<void> requestPermission(Permission permission) async {
+    debugPrint("Here in request permission");
     final status = await permission.request();
     setState(() {
       _permissionStatus = status;
@@ -31,17 +33,20 @@ class _MapTab extends State<MapTab> {
       shrinkWrap: true,
       itemCount: 1,
       itemBuilder: (BuildContext context, int index) {
-        return Provider.of<IsMapReadyNotifier>(context, listen: true)
-                .hasLocationPermission
+        return (Provider.of<IsMapReadyNotifier>(context, listen: true)
+                    .hasLocationPermission ||
+                !Global.isAndroid)
             ? Column(
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.7,
+                    height: MediaQuery.of(context).size.height *
+                        ((Global.screenHeight < 600) ? 0.60 : 0.70),
                     width: MediaQuery.of(context).size.width,
                     child: const MapWidget(),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.12,
+                    height: MediaQuery.of(context).size.height *
+                        ((Global.screenHeight < 600) ? 0.175 : 0.125),
                     width: MediaQuery.of(context).size.width,
                     child: const MapTextDisplay(),
                   )

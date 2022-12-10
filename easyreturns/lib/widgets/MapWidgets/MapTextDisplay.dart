@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../ChangeNotifiers/requestMapDetailsNotifier.dart';
+import '../../mainGlobal/Global.dart';
 
 class MapTextDisplay extends StatelessWidget {
   const MapTextDisplay({super.key});
@@ -22,7 +23,7 @@ class MapTextDisplay extends StatelessWidget {
 
     TextStyle style = TextStyle(
       color: Theme.of(context).textTheme.displaySmall?.color,
-      fontSize: 20,
+      fontSize: (Global.screenHeight < 600) ? 14 : 20,
     );
 
     return Column(

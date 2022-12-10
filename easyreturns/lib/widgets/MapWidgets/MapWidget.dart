@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:easyreturns/ChangeNotifiers/IsMapReadyNotifier.dart';
 import 'package:easyreturns/ChangeNotifiers/requestMapDetailsNotifier.dart';
+import 'package:easyreturns/mainGlobal/Global.dart';
 import 'package:easyreturns/models/PickupRequest.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -81,7 +82,7 @@ class MapWidgetState extends State<MapWidget> {
   _onMarkerTapped(MarkerId markerId) {
     PickupRequest request = requests[markerId] as PickupRequest;
     Provider.of<RequestMapDetailsNotifier>(context, listen: false)
-        .setNewRequestAsCurrent(request);
+        .setNewRequestAsCurrent(request, true);
   }
 
   @override

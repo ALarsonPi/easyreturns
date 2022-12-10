@@ -10,7 +10,8 @@ class RequestMapDetailsNotifier extends ChangeNotifier {
   String dayAndTimeOfPickup = "Mon, 9 am - 12 noon";
   String packages = "Shampoo Bottle (default)";
 
-  void setNewRequestAsCurrent(PickupRequest pickup) {
+  void setNewRequestAsCurrent(
+      PickupRequest pickup, bool shouldNotifyListeners) {
     fullAddress =
         "${pickup.streetAddress}, ${pickup.city}, ${(pickup.zipCode.isNotEmpty) ? pickup.zipCode : ''}";
     nameOfCustomer = "${pickup.firstName} ${pickup.lastName}";
@@ -29,6 +30,8 @@ class RequestMapDetailsNotifier extends ChangeNotifier {
       }
     }
 
-    notifyListeners();
+    if (shouldNotifyListeners) {
+      notifyListeners();
+    }
   }
 }
