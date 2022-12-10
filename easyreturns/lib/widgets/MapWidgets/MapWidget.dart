@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:easyreturns/ChangeNotifiers/IsMapReadyNotifier.dart';
+import 'package:easyreturns/ChangeNotifiers/requestMapDetailsNotifier.dart';
 import 'package:easyreturns/models/PickupRequest.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -24,8 +25,10 @@ class MapWidgetState extends State<MapWidget> {
   static late CameraPosition _initialPosition;
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+  Map<MarkerId, PickupRequest> requests = <MarkerId, PickupRequest>{};
 
-  void _addMarker(String id, double? latitude, double? longitude) {
+  void _addMarker(
+      String id, double? latitude, double? longitude, PickupRequest request) {
     var markerIdVal = id;
     final MarkerId markerId = MarkerId(markerIdVal);
 
@@ -48,6 +51,7 @@ class MapWidgetState extends State<MapWidget> {
 
     setState(() {
       markers[markerId] = marker;
+      requests[markerId] = request;
     });
   }
 
@@ -59,6 +63,7 @@ class MapWidgetState extends State<MapWidget> {
         request.pickupRequestID.toString(),
         double.tryParse(request.latitude),
         double.tryParse(request.longitude),
+        request,
       );
     }
 
@@ -73,13 +78,17 @@ class MapWidgetState extends State<MapWidget> {
     }
   }
 
-  _onMarkerTapped(MarkerId markerId) {}
+  _onMarkerTapped(MarkerId markerId) {
+    PickupRequest request = requests[markerId] as PickupRequest;
+    Provider.of<RequestMapDetailsNotifier>(context, listen: false)
+        .setNewRequestAsCurrent(request);
+  }
 
   @override
   Widget build(BuildContext context) {
     // Initial default - middle of PROVO
     _initialPosition = CameraPosition(
-      target: LatLng(40.233845, -111.658531),
+      target: const LatLng(40.233845, -111.658531),
       zoom: currZoom,
     );
     _setMarkers(context);

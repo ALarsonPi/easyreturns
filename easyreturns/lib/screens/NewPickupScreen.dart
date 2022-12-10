@@ -1,4 +1,5 @@
 import 'package:easyreturns/DAOS/pickupRequestDao.dart';
+import 'package:easyreturns/mainGlobal/Global.dart';
 import 'package:easyreturns/models/PickupRequest.dart';
 import 'package:easyreturns/widgets/PickupRequestWidgets/PackageItem.dart';
 import 'package:flutter/material.dart';
@@ -173,7 +174,8 @@ class _NewPickupScreen extends State<NewPickupScreen> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: ElevatedButton(
-                  onPressed: (additionalPackageItems.length < 3)
+                  onPressed: (additionalPackageItems.length <
+                          (Global.numPackagesAllowed - 1))
                       ? () => {
                             addListItem(),
                           }
