@@ -40,13 +40,13 @@ class _MapTab extends State<MapTab> {
                 children: [
                   SizedBox(
                     height: MediaQuery.of(context).size.height *
-                        ((Global.screenHeight < 600) ? 0.60 : 0.70),
+                        ((Global.screenHeight < 600) ? 0.55 : 0.65),
                     width: MediaQuery.of(context).size.width,
                     child: const MapWidget(),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height *
-                        ((Global.screenHeight < 600) ? 0.175 : 0.125),
+                        ((Global.screenHeight < 600) ? 0.175 : 0.175),
                     width: MediaQuery.of(context).size.width,
                     child: const MapTextDisplay(),
                   )
